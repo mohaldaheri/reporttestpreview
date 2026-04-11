@@ -1,13 +1,18 @@
 import hayyakumLogo from "@/assets/hayyakum-logo.png";
+import headerPattern from "@/assets/header-pattern.png";
 
 function HeaderPatternBand() {
   return (
-    <div className="pointer-events-none absolute inset-y-0 left-0 z-0 w-[28%] overflow-hidden">
+    <div className="pointer-events-none absolute inset-y-0 right-0 z-0 w-[45%] overflow-hidden">
       <div
         className="absolute inset-0 h-full w-full"
         style={{
-          opacity: 0.06,
-          backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,0.15) 20px, rgba(255,255,255,0.15) 40px)`,
+          opacity: 0.08,
+          backgroundImage: `url(${headerPattern})`,
+          backgroundSize: "contain",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "right center",
+          filter: "brightness(0) invert(1)",
         }}
       />
     </div>
