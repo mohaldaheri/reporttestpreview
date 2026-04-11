@@ -1,5 +1,6 @@
 import hayyakumLogo from "@/assets/hayyakum-logo.png";
 import hajjMinistryLogo from "@/assets/hajj-ministry-logo.png";
+import khumasiyaLogo from "@/assets/khumasiya-logo.png";
 
 function HeaderPatternBand() {
   return (
