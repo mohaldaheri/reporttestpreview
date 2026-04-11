@@ -1,4 +1,4 @@
-import { useState } from "react";
+import hayyakumLogo from "@/assets/hayyakum-logo.png";
 
 function HeaderPatternBand() {
   return (
@@ -47,12 +47,13 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
           <LogoPlaceholder text={"الخماسية\nالسعودية"} className="h-12 min-w-[118px] md:h-14" />
         </div>
 
-        <div className="text-right">
-          <div
-            className={`font-semibold text-primary-foreground ${compact ? "text-lg md:text-xl" : "text-2xl md:text-3xl"}`}
-          >
-            حياكم الله
-          </div>
+        <div className="flex items-center">
+          <img
+            src={hayyakumLogo}
+            alt="حياكم الله"
+            className={compact ? "h-12 w-auto md:h-14" : "h-16 w-auto md:h-20"}
+            style={{ filter: "brightness(0) invert(1)" }}
+          />
         </div>
       </div>
 
