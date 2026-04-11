@@ -48,7 +48,7 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
             src={hajjMinistryLogo}
             alt="وزارة الحج والعمرة"
             className="h-14 w-auto md:h-16"
-            style={{ filter: "brightness(0) invert(1)" }}
+            style={{ filter: "invert(1) brightness(10)", mixBlendMode: "screen" }}
           />
           <LogoPlaceholder text={"الخماسية\nالسعودية"} className="h-12 min-w-[118px] md:h-14" />
         </div>
