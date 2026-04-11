@@ -44,7 +44,12 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
 
       <div className="relative flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <div className="flex items-center gap-3">
-          <LogoPlaceholder text="وزارة الحج" className="h-12 min-w-[96px] md:h-14" />
+          <img
+            src={hajjMinistryLogo}
+            alt="وزارة الحج والعمرة"
+            className="h-14 w-auto md:h-16"
+            style={{ filter: "brightness(0) invert(1)" }}
+          />
           <LogoPlaceholder text={"الخماسية\nالسعودية"} className="h-12 min-w-[118px] md:h-14" />
         </div>
 
