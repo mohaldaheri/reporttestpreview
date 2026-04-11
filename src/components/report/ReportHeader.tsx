@@ -1,5 +1,6 @@
 import hayyakumLogo from "@/assets/hayyakum-logo.png";
 import hajjMinistryLogo from "@/assets/hajj-ministry-logo.png";
+import khumasiyaLogo from "@/assets/khumasiya-logo.png";
 
 function HeaderPatternBand() {
   return (
@@ -49,7 +50,11 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
             alt="وزارة الحج والعمرة"
             className="h-14 w-auto md:h-16"
           />
-          <LogoPlaceholder text={"الخماسية\nالسعودية"} className="h-12 min-w-[118px] md:h-14" />
+          <img
+            src={khumasiyaLogo}
+            alt="الخماسية السعودية"
+            className="h-12 w-auto md:h-14"
+          />
         </div>
 
         <div className="flex items-center">
