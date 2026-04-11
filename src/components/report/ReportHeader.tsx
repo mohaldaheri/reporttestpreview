@@ -51,7 +51,7 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
           <img
             src={hayyakumLogo}
             alt="حياكم الله"
-            className={compact ? "h-12 w-auto md:h-14" : "h-16 w-auto md:h-20"}
+            className={compact ? "h-16 w-auto md:h-20" : "h-24 w-auto md:h-28"}
             style={{ filter: "brightness(0) invert(1)" }}
           />
         </div>
