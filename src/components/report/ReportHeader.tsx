@@ -63,7 +63,7 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
       </div>
 
       <div className="relative mt-4 text-right">
-        <div className="text-xl font-semibold md:text-2xl">
+        <div className="text-base font-semibold md:text-2xl">
           الخماسية السعودية لخدمات حجاج الداخل
         </div>
         <div className="mt-1 text-sm font-bold text-brand-beige md:text-base">
