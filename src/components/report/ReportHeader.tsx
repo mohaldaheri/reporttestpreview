@@ -26,7 +26,15 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
         background: `#54AE78`,
       }}
     >
-      <HeaderPatternBand />
+      {/* Ornament on the left side */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-0 flex items-center" style={{ transform: 'translateX(-40%)' }}>
+        <img
+          src={circleOrnament}
+          alt=""
+          className="h-[140%] w-auto opacity-20"
+          style={{ filter: "brightness(0) saturate(100%)" }}
+        />
+      </div>
       <div className="absolute inset-0 bg-foreground/5" />
 
       <div className="relative flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
