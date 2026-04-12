@@ -2,6 +2,7 @@ import hayyakumLogo from "@/assets/hayyakum-logo.png";
 import hajjMinistryLogo from "@/assets/hajj-ministry-logo.svg";
 import circleOrnament from "@/assets/circle-ornament.svg";
 import khumasiaLogo from "@/assets/khumasia-logo.png";
+import newHeaderLogo from "@/assets/new-header-logo.png";
 
 function LogoPlaceholder({ text, className = "" }: { text: string; className?: string }) {
   return (
