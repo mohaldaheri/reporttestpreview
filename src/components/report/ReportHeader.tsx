@@ -2,6 +2,7 @@ import hayyakumLogo from "@/assets/hayyakum-logo.png";
 import hajjMinistryLogo from "@/assets/hajj-ministry-logo.svg";
 import circleOrnament from "@/assets/circle-ornament.svg";
 import khumasiaLogo from "@/assets/khumasia-logo.png";
+import newHeaderLogo from "@/assets/new-header-logo.png";
 
 function LogoPlaceholder({ text, className = "" }: { text: string; className?: string }) {
   return (
@@ -40,26 +41,32 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
 
       {/* Ministry logo centered on top */}
       <div className="relative flex flex-col items-center gap-3">
-        <img
-          src={hajjMinistryLogo}
-          alt="وزارة الحج والعمرة"
-          className="h-14 w-auto md:h-16"
-        />
-        {/* Khumasia (right) and Hayyakum (left) side by side */}
         <div className="flex w-full items-center justify-between">
           <img
             src={khumasiaLogo}
             alt="الخماسية السعودية"
-            className="h-16 w-auto md:h-24"
+            className="h-12 w-auto md:h-20"
             style={{ filter: "brightness(0) invert(1)" }}
           />
           <img
-            src={hayyakumLogo}
-            alt="حياكم الله"
-            className={compact ? "h-20 w-auto md:h-28" : "h-24 w-auto md:h-36"}
+            src={hajjMinistryLogo}
+            alt="وزارة الحج والعمرة"
+            className="h-12 w-auto md:h-16"
+          />
+          <img
+            src={newHeaderLogo}
+            alt="شعار إضافي"
+            className="h-12 w-auto md:h-20"
             style={{ filter: "brightness(0) invert(1)" }}
           />
         </div>
+        {/* Hayyakum logo centered below */}
+        <img
+          src={hayyakumLogo}
+          alt="حياكم الله"
+          className={compact ? "h-16 w-auto md:h-24" : "h-20 w-auto md:h-28"}
+          style={{ filter: "brightness(0) invert(1)" }}
+        />
       </div>
 
       <div className="relative mt-4 text-right">
