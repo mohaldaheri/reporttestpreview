@@ -1,19 +1,6 @@
 import hayyakumLogo from "@/assets/hayyakum-logo.png";
 import hajjMinistryLogo from "@/assets/hajj-ministry-logo.svg";
-
-function HeaderPatternBand() {
-  return (
-    <div className="pointer-events-none absolute inset-y-0 left-0 z-0 w-[28%] overflow-hidden">
-      <div
-        className="absolute inset-0 h-full w-full"
-        style={{
-          opacity: 0.06,
-          backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,0.15) 20px, rgba(255,255,255,0.15) 40px)`,
-        }}
-      />
-    </div>
-  );
-}
+import circleOrnament from "@/assets/circle-ornament.svg";
 
 function LogoPlaceholder({ text, className = "" }: { text: string; className?: string }) {
   return (
@@ -39,7 +26,15 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
         background: `#54AE78`,
       }}
     >
-      <HeaderPatternBand />
+      {/* Ornament on the left side */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-0 flex items-center" style={{ transform: 'translateX(-40%)' }}>
+        <img
+          src={circleOrnament}
+          alt=""
+          className="h-[140%] w-auto opacity-20"
+          style={{ filter: "brightness(0) saturate(100%)" }}
+        />
+      </div>
       <div className="absolute inset-0 bg-foreground/5" />
 
       <div className="relative flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
