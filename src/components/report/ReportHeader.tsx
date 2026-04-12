@@ -41,12 +41,21 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
 
       {/* Ministry logo centered on top */}
       <div className="relative flex flex-col items-center gap-3">
-        <img
-          src={hajjMinistryLogo}
-          alt="وزارة الحج والعمرة"
-          className="h-14 w-auto md:h-16"
-        />
-        {/* Khumasia (right) and Hayyakum (left) side by side */}
+        {/* Ministry logo and Saada logo side by side at top */}
+        <div className="flex w-full items-center justify-center gap-4">
+          <img
+            src={saadaLogo}
+            alt="فريق السعادة"
+            className="h-12 w-auto md:h-16"
+            style={{ filter: "brightness(0) invert(1)" }}
+          />
+          <img
+            src={hajjMinistryLogo}
+            alt="وزارة الحج والعمرة"
+            className="h-14 w-auto md:h-16"
+          />
+        </div>
+        {/* Khumasia (left) and Hayyakum (right) side by side */}
         <div className="flex w-full items-center justify-between">
           <img
             src={khumasiaLogo}
@@ -58,7 +67,6 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
             src={hayyakumLogo}
             alt="حياكم الله"
             className={compact ? "h-20 w-auto md:h-28" : "h-24 w-auto md:h-36"}
-            style={{ filter: "brightness(0) invert(1)" }}
           />
         </div>
       </div>
