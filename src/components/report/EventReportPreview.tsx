@@ -1,5 +1,4 @@
 import ReportHeader from "./ReportHeader";
-import happinessTeamLogo from "@/assets/happiness-team-logo.png";
 
 const sampleImages = [
   "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80",
@@ -96,18 +95,13 @@ export default function EventReportPreview({
           </div>
 
           {/* Reporter */}
-          <div className="mt-6 flex items-center justify-between pt-5">
+          <div className="mt-6 flex justify-end pt-5">
             <div className="min-w-[180px] text-right">
               <div className="text-sm font-bold text-primary-dark">معد التقرير</div>
               <div className="mt-2 text-base font-semibold text-brand-brown">
                 {data.reporter || "—"}
               </div>
             </div>
-            <img
-              src={happinessTeamLogo}
-              alt="فريق السعادة"
-              className="h-16 w-auto md:h-20"
-            />
           </div>
         </div>
       </div>
