@@ -48,7 +48,7 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
           <img
             src={khumasiaLogo}
             alt="الخماسية السعودية"
-            className="h-14 w-auto md:h-16"
+            className="h-20 w-auto md:h-24"
             style={{ filter: "brightness(0) invert(1)" }}
           />
         </div>
