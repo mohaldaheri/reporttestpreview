@@ -48,15 +48,15 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
         {/* Khumasia (right) and Hayyakum (left) side by side */}
         <div className="flex w-full items-center justify-between">
           <img
-            src={hayyakumLogo}
-            alt="حياكم الله"
-            className={compact ? "h-20 w-auto md:h-28" : "h-24 w-auto md:h-36"}
-            style={{ filter: "brightness(0) invert(1)" }}
-          />
-          <img
             src={khumasiaLogo}
             alt="الخماسية السعودية"
             className="h-16 w-auto md:h-24"
+            style={{ filter: "brightness(0) invert(1)" }}
+          />
+          <img
+            src={hayyakumLogo}
+            alt="حياكم الله"
+            className={compact ? "h-20 w-auto md:h-28" : "h-24 w-auto md:h-36"}
             style={{ filter: "brightness(0) invert(1)" }}
           />
         </div>
