@@ -36,7 +36,7 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
           : "px-6 py-5 md:px-8 md:py-6"
       }`}
       style={{
-        background: `linear-gradient(135deg, hsl(var(--brand-green)) 0%, hsl(var(--brand-green-dark)) 100%)`,
+        background: `#54AE78`,
       }}
     >
       <HeaderPatternBand />
