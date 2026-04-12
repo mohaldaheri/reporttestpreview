@@ -38,33 +38,32 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
       </div>
       <div className="absolute inset-0 bg-foreground/5" />
 
-      <div className="relative flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-        <div className="flex flex-col items-center gap-2">
+      {/* Ministry logo centered on top */}
+      <div className="relative flex flex-col items-center gap-3">
+        <img
+          src={hajjMinistryLogo}
+          alt="وزارة الحج والعمرة"
+          className="h-14 w-auto md:h-16"
+        />
+        {/* Khumasia (right) and Hayyakum (left) side by side */}
+        <div className="flex w-full items-center justify-between">
           <img
-            src={hajjMinistryLogo}
-            alt="وزارة الحج والعمرة"
-            className="h-14 w-auto md:h-16"
+            src={hayyakumLogo}
+            alt="حياكم الله"
+            className={compact ? "h-20 w-auto md:h-28" : "h-24 w-auto md:h-36"}
+            style={{ filter: "brightness(0) invert(1)" }}
           />
           <img
             src={khumasiaLogo}
             alt="الخماسية السعودية"
-            className="h-20 w-auto md:h-24"
-            style={{ filter: "brightness(0) invert(1)" }}
-          />
-        </div>
-
-        <div className="flex items-center">
-          <img
-            src={hayyakumLogo}
-            alt="حياكم الله"
-            className={compact ? "h-24 w-auto md:h-28" : "h-32 w-auto md:h-36"}
+            className="h-16 w-auto md:h-24"
             style={{ filter: "brightness(0) invert(1)" }}
           />
         </div>
       </div>
 
       <div className="relative mt-4 text-right">
-        <div className="text-xl font-semibold md:text-2xl">
+        <div className="text-base font-semibold md:text-2xl">
           الخماسية السعودية لخدمات حجاج الداخل
         </div>
         <div className="mt-1 text-sm font-bold text-brand-beige md:text-base">
