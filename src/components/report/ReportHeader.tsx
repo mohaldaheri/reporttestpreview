@@ -49,6 +49,15 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
 
         <div className="flex items-center">
           <img
+            src={khumasiaLogo}
+            alt="الخماسية السعودية"
+            className="h-14 w-auto md:h-16"
+            style={{ filter: "brightness(0) invert(1)" }}
+          />
+        </div>
+
+        <div className="flex items-center">
+          <img
             src={hayyakumLogo}
             alt="حياكم الله"
             className={compact ? "h-24 w-auto md:h-28" : "h-32 w-auto md:h-36"}
