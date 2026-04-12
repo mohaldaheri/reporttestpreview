@@ -39,15 +39,12 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
       <div className="absolute inset-0 bg-foreground/5" />
 
       <div className="relative flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-        <div className="flex items-center gap-3">
+        <div className="flex flex-col items-center gap-2">
           <img
             src={hajjMinistryLogo}
             alt="وزارة الحج والعمرة"
             className="h-14 w-auto md:h-16"
           />
-        </div>
-
-        <div className="flex items-center">
           <img
             src={khumasiaLogo}
             alt="الخماسية السعودية"
