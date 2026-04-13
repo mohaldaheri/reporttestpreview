@@ -46,7 +46,7 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
           <img
             src={saadaLogo}
             alt="فريق السعادة"
-            className="h-16 w-auto md:h-20"
+className="h-20 w-auto md:h-24"
             style={{ filter: "brightness(0) invert(1)" }}
           />
           <img
