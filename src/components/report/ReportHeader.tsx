@@ -44,15 +44,15 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
         {/* Ministry logo and Saada logo side by side at top */}
         <div className="flex w-full items-center justify-center gap-3" style={{ marginRight: '-2rem' }}>
           <img
-            src={saadaLogo}
-            alt="فريق السعادة"
-className="h-20 w-auto md:h-24"
-            style={{ filter: "brightness(0) invert(1)" }}
-          />
-          <img
             src={hajjMinistryLogo}
             alt="وزارة الحج والعمرة"
             className="h-16 w-auto md:h-20"
+          />
+          <img
+            src={saadaLogo}
+            alt="فريق السعادة"
+            className="h-20 w-auto md:h-24"
+            style={{ filter: "brightness(0) invert(1)" }}
           />
         </div>
         {/* Khumasia (left) and Hayyakum (right) side by side */}
