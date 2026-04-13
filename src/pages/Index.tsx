@@ -11,6 +11,8 @@ import {
 import ReportHeader from "@/components/report/ReportHeader";
 import EventReportPreview, { type ReportData } from "@/components/report/EventReportPreview";
 import EventReportForm from "@/components/report/EventReportForm";
+import { exportPreviewToPdf } from "@/lib/exportPdf";
+import { toast } from "sonner";
 
 const initialData: ReportData = {
   title: "مبادرة استقبال ضيوف الرحمن",
@@ -27,9 +29,11 @@ const initialData: ReportData = {
 
 export default function Index() {
   const objectUrlsRef = useRef<string[]>([]);
+  const previewRef = useRef<HTMLDivElement>(null);
   const [form, setForm] = useState(initialData);
   const [success, setSuccess] = useState(false);
   const [images, setImages] = useState<string[]>([]);
+  const [exporting, setExporting] = useState(false);
 
   const update = (key: keyof ReportData, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -51,6 +55,32 @@ export default function Index() {
     setSuccess(false);
   };
 
+  const handleExportPdf = async () => {
+    if (!previewRef.current) return;
+    setExporting(true);
+    try {
+      await exportPreviewToPdf(previewRef.current);
+      setSuccess(true);
+    } catch (err) {
+      console.error(err);
+      toast.error("حدث خطأ أثناء تصدير التقرير");
+    } finally {
+      setExporting(false);
+    }
+  };
+
+  const handleDownloadAgain = async () => {
+    if (!previewRef.current) return;
+    setExporting(true);
+    try {
+      await exportPreviewToPdf(previewRef.current);
+    } catch {
+      toast.error("حدث خطأ أثناء تحميل التقرير");
+    } finally {
+      setExporting(false);
+    }
+  };
+
   useEffect(() => {
     return () => {
       objectUrlsRef.current.forEach((url) => URL.revokeObjectURL(url));
@@ -70,18 +100,19 @@ export default function Index() {
             images={images}
             onUpdate={update}
             onFilesChange={handleFiles}
-            onSubmit={() => setSuccess(true)}
+            onSubmit={handleExportPdf}
             onReset={resetAll}
+            exporting={exporting}
           />
 
           <div className="space-y-3">
             <div className="text-right">
               <h2 className="text-lg font-bold text-brand-brown">معاينة تصميم التقرير</h2>
               <p className="text-sm text-muted-foreground">
-                هذه معاينة بصرية سريعة. الخطوة التالية يمكن أن تكون إضافة توليد PDF الحقيقي.
+                اضغط "إصدار التقرير" لتحميل ملف PDF مطابق لهذه المعاينة.
               </p>
             </div>
-            <EventReportPreview data={form} images={images} />
+            <EventReportPreview ref={previewRef} data={form} images={images} />
           </div>
         </div>
       </div>
@@ -91,11 +122,17 @@ export default function Index() {
           <DialogHeader>
             <DialogTitle className="text-right">تم إصدار التقرير بنجاح</DialogTitle>
             <DialogDescription className="text-right">
-              هذه نافذة معاينة أولية. في النسخة التالية سنربط الزر بتصدير PDF الحقيقي.
+              تم تصدير التقرير كملف PDF بنجاح. يمكنك تحميله مرة أخرى أو إنشاء تقرير جديد.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="flex-row-reverse gap-2 sm:justify-start">
-            <Button className="bg-primary-dark hover:bg-primary-dark/90">تحميل التقرير</Button>
+            <Button
+              className="bg-primary-dark hover:bg-primary-dark/90"
+              onClick={handleDownloadAgain}
+              disabled={exporting}
+            >
+              {exporting ? "جاري التحميل..." : "تحميل التقرير"}
+            </Button>
             <Button variant="outline" onClick={resetAll}>
               إنشاء تقرير جديد
             </Button>

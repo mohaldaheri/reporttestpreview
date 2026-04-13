@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import ReportHeader from "./ReportHeader";
 
 const sampleImages = [
@@ -18,17 +19,13 @@ export interface ReportData {
   reporter: string;
 }
 
-export default function EventReportPreview({
-  data,
-  images,
-}: {
-  data: ReportData;
-  images: string[];
-}) {
+const EventReportPreview = forwardRef<HTMLDivElement, { data: ReportData; images: string[] }>(
+  ({ data, images }, ref) => {
   const shown = images.length ? images.slice(0, 4) : sampleImages;
 
   return (
     <div
+      ref={ref}
       className="mx-auto w-full max-w-[820px] rounded-3xl bg-card p-4 shadow-2xl md:p-6"
       dir="rtl"
     >
@@ -107,4 +104,8 @@ export default function EventReportPreview({
       </div>
     </div>
   );
-}
+});
+
+EventReportPreview.displayName = "EventReportPreview";
+
+export default EventReportPreview;

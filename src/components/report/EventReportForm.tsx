@@ -14,9 +14,10 @@ interface Props {
   onFilesChange: (files: FileList | null) => void;
   onSubmit: () => void;
   onReset: () => void;
+  exporting?: boolean;
 }
 
-export default function EventReportForm({ form, images, onUpdate, onFilesChange, onSubmit, onReset }: Props) {
+export default function EventReportForm({ form, images, onUpdate, onFilesChange, onSubmit, onReset, exporting }: Props) {
   const fileRef = useRef<HTMLInputElement | null>(null);
   const imageCountText = useMemo(() => `${images.length} / 4 صور`, [images.length]);
 
@@ -100,9 +101,9 @@ export default function EventReportForm({ form, images, onUpdate, onFilesChange,
         </div>
 
         <div className="grid grid-cols-2 gap-3 pt-2">
-          <Button className="rounded-xl bg-primary-dark hover:bg-primary-dark/90" onClick={onSubmit}>
+          <Button className="rounded-xl bg-primary-dark hover:bg-primary-dark/90" onClick={onSubmit} disabled={exporting}>
             <FileText className="ml-2 h-4 w-4" />
-            إصدار التقرير
+            {exporting ? "جاري التصدير..." : "إصدار التقرير"}
           </Button>
           <Button variant="outline" className="rounded-xl" onClick={onReset}>
             <RefreshCw className="ml-2 h-4 w-4" />
