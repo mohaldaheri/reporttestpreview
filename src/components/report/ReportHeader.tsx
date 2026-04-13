@@ -42,7 +42,7 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
       {/* Ministry logo centered on top */}
       <div className="relative flex flex-col items-center gap-3">
         {/* Ministry logo and Saada logo side by side at top */}
-        <div className="flex w-full items-center justify-end gap-3">
+        <div className="flex w-full items-center justify-center gap-3">
           <img
             src={saadaLogo}
             alt="فريق السعادة"
