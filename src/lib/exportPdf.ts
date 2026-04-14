@@ -78,8 +78,8 @@ export async function exportPreviewToPdf(element: HTMLElement, fileName = "تق�
   const origOpacity = ornamentImg?.style.opacity;
   const origFilter = ornamentImg?.style.filter;
   if (ornamentImg) {
-    ornamentImg.style.opacity = "0.30";
-    ornamentImg.style.filter = "brightness(0.55) saturate(0)";
+    ornamentImg.style.opacity = "0.50";
+    ornamentImg.style.filter = "brightness(0.65) saturate(0)";
   }
 
   try {
