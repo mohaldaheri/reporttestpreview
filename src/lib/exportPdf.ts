@@ -105,6 +105,10 @@ export async function exportPreviewToPdf(element: HTMLElement, fileName = "تق�
   }
 
   try {
+    // Force a layout reflow so the browser settles dimensions before capture
+    element.getBoundingClientRect();
+    await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+
     const canvas = await html2canvas(element, {
       scale: 2,
       useCORS: true,
