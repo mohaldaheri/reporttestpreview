@@ -33,8 +33,8 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
         <img
           src={circleOrnament}
           alt=""
-          className="h-[160%] w-auto opacity-20"
-          style={{ filter: "brightness(0.4) saturate(0)" }}
+          className="h-[160%] w-auto opacity-30"
+          style={{ filter: "brightness(0.55) saturate(0)" }}
         />
       </div>
       <div className="absolute inset-0 bg-foreground/5" />
