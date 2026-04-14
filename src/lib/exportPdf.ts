@@ -69,9 +69,31 @@ function imgToDataURL(img: HTMLImageElement): Promise<string | null> {
   });
 }
 
+/** Wait until every <img> inside the element has finished loading. */
+async function waitForImages(element: HTMLElement, timeout = 10000): Promise<void> {
+  const imgs = Array.from(element.querySelectorAll("img"));
+  await Promise.all(
+    imgs.map(
+      (img) =>
+        new Promise<void>((resolve) => {
+          if (img.complete && img.naturalHeight > 0) return resolve();
+          const timer = setTimeout(resolve, timeout);
+          img.onload = () => { clearTimeout(timer); resolve(); };
+          img.onerror = () => { clearTimeout(timer); resolve(); };
+        })
+    )
+  );
+}
+
 export async function exportPreviewToPdf(element: HTMLElement, fileName = "تقرير-الفعالية.pdf") {
+  // Wait for all images to fully load before doing anything
+  await waitForImages(element);
+
   // Inline SVGs before capture
   const restore = await inlineSvgImages(element);
+
+  // After inlining, wait again for the replaced src to settle
+  await waitForImages(element);
 
   // Boost ornament visibility for PDF export
   const ornamentImg = element.querySelector('.pointer-events-none img[alt=""]') as HTMLImageElement | null;
