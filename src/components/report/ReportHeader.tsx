@@ -53,7 +53,6 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
             alt="فريق السعادة"
             className="h-20 w-auto md:h-24"
           />
-          />
         </div>
         {/* Khumasia (left) and Hayyakum (right) side by side */}
         <div className="flex w-full items-center justify-between">
@@ -62,7 +61,6 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
             alt="الخماسية السعودية"
             className="h-16 w-auto md:h-24"
             />
-          />
           <img
             src={hayyakumLogo}
             alt="حياكم الله"
