@@ -85,15 +85,44 @@ async function waitForImages(element: HTMLElement, timeout = 10000): Promise<voi
   );
 }
 
-export async function exportPreviewToPdf(element: HTMLElement, fileName = "تقرير-الفعالية.pdf") {
-  // Wait for all images to fully load before doing anything
-  await waitForImages(element);
+/** Force all images to fully decode before capture */
+async function ensureImagesDecoded(element: HTMLElement): Promise<void> {
+  const imgs = Array.from(element.querySelectorAll("img"));
+  await Promise.all(
+    imgs.map(async (img) => {
+      if (!img.src || img.src === "data:,") return;
+      try {
+        // decode() ensures the image bitmap is ready for painting
+        await img.decode();
+      } catch {
+        // fallback: already loaded or broken
+      }
+    })
+  );
+}
 
-  // Inline SVGs before capture
+/** Small delay helper */
+const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+export async function exportPreviewToPdf(element: HTMLElement, fileName = "تقرير-الفعالية.pdf") {
+  // Step 1: Wait for all images to fully load
+  await waitForImages(element);
+  await ensureImagesDecoded(element);
+
+  // Step 2: Inline SVGs before capture
   const restore = await inlineSvgImages(element);
 
-  // After inlining, wait again for the replaced src to settle
+  // Step 3: After inlining, wait again for the replaced src to settle
   await waitForImages(element);
+  await ensureImagesDecoded(element);
+
+  // Step 4: Give the browser enough time to paint everything
+  // Multiple reflows + a real delay to ensure blob images are rendered
+  element.getBoundingClientRect();
+  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+  await delay(500);
+  element.getBoundingClientRect();
+  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
 
   // Boost ornament visibility for PDF export
   const ornamentImg = element.querySelector('.pointer-events-none img[alt=""]') as HTMLImageElement | null;
@@ -105,9 +134,10 @@ export async function exportPreviewToPdf(element: HTMLElement, fileName = "تق�
   }
 
   try {
-    // Force a layout reflow so the browser settles dimensions before capture
+    // Final reflow before capture
     element.getBoundingClientRect();
     await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+    await delay(200);
 
     const canvas = await html2canvas(element, {
       scale: 2,
