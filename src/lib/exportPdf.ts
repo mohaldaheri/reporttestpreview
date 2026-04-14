@@ -126,6 +126,11 @@ export async function exportPreviewToPdf(element: HTMLElement, fileName = "تق�
 
     pdf.save(fileName);
   } finally {
+    // Restore ornament original values
+    if (ornamentImg) {
+      ornamentImg.style.opacity = origOpacity || "";
+      ornamentImg.style.filter = origFilter || "";
+    }
     restore();
   }
 }
