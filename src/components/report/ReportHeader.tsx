@@ -1,8 +1,8 @@
 import saadaLogo from "@/assets/hayyakum-logo.png";
-import hajjMinistryLogo from "@/assets/hajj-ministry-logo.svg";
+import hajjMinistryLogo from "@/assets/hajj-ministry-logo.png";
 import circleOrnament from "@/assets/circle-ornament.svg";
 import khumasiaLogo from "@/assets/khumasia-logo.png";
-import hayyakumLogo from "@/assets/hayyakum-white-logo.svg";
+import hayyakumLogo from "@/assets/hayyakum-white-logo.png";
 
 function LogoPlaceholder({ text, className = "" }: { text: string; className?: string }) {
   return (
@@ -52,7 +52,6 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
             src={saadaLogo}
             alt="فريق السعادة"
             className="h-20 w-auto md:h-24"
-            style={{ filter: "brightness(0) invert(1)" }}
           />
         </div>
         {/* Khumasia (left) and Hayyakum (right) side by side */}
@@ -61,8 +60,7 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
             src={khumasiaLogo}
             alt="الخماسية السعودية"
             className="h-16 w-auto md:h-24"
-            style={{ filter: "brightness(0) invert(1)" }}
-          />
+            />
           <img
             src={hayyakumLogo}
             alt="حياكم الله"
