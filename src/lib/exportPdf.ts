@@ -73,6 +73,15 @@ export async function exportPreviewToPdf(element: HTMLElement, fileName = "تق�
   // Inline SVGs before capture
   const restore = await inlineSvgImages(element);
 
+  // Boost ornament visibility for PDF export
+  const ornamentImg = element.querySelector('.pointer-events-none img[alt=""]') as HTMLImageElement | null;
+  const origOpacity = ornamentImg?.style.opacity;
+  const origFilter = ornamentImg?.style.filter;
+  if (ornamentImg) {
+    ornamentImg.style.opacity = "0.30";
+    ornamentImg.style.filter = "brightness(0.55) saturate(0)";
+  }
+
   try {
     const canvas = await html2canvas(element, {
       scale: 2,
