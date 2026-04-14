@@ -40,11 +40,14 @@ export default function Index() {
   };
 
   const handleFiles = (files: FileList | null) => {
-    objectUrlsRef.current.forEach((url) => URL.revokeObjectURL(url));
-    const selected = Array.from(files || []).slice(0, 4);
-    const urls = selected.map((file) => URL.createObjectURL(file));
-    objectUrlsRef.current = urls;
-    setImages(urls);
+    if (!files || files.length === 0) return;
+    const newUrls = Array.from(files).map((file) => URL.createObjectURL(file));
+    const combined = [...objectUrlsRef.current, ...newUrls].slice(0, 4);
+    // Revoke URLs that were dropped due to the 4-image limit
+    const dropped = [...objectUrlsRef.current, ...newUrls].slice(4);
+    dropped.forEach((url) => URL.revokeObjectURL(url));
+    objectUrlsRef.current = combined;
+    setImages(combined);
   };
 
   const resetAll = () => {
