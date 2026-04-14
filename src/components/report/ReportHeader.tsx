@@ -52,7 +52,7 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
             src={saadaLogo}
             alt="فريق السعادة"
             className="h-20 w-auto md:h-24"
-            style={{ filter: "brightness(0) invert(1)" }}
+          />
           />
         </div>
         {/* Khumasia (left) and Hayyakum (right) side by side */}
@@ -61,7 +61,7 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
             src={khumasiaLogo}
             alt="الخماسية السعودية"
             className="h-16 w-auto md:h-24"
-            style={{ filter: "brightness(0) invert(1)" }}
+            />
           />
           <img
             src={hayyakumLogo}
