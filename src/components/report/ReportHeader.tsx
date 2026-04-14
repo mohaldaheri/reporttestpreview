@@ -1,6 +1,6 @@
 import saadaLogo from "@/assets/hayyakum-logo.png";
 import hajjMinistryLogo from "@/assets/hajj-ministry-logo.png";
-import circleOrnament from "@/assets/circle-ornament.svg";
+import circleOrnament from "@/assets/circle-ornament.png";
 import khumasiaLogo from "@/assets/khumasia-logo.png";
 import hayyakumLogo from "@/assets/hayyakum-white-logo.png";
 
@@ -29,12 +29,12 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
       }}
     >
       {/* Ornament on the left side */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 z-0 flex items-center" style={{ transform: 'translateX(-40%)' }}>
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-0 flex items-center" style={{ transform: 'translateX(-30%)' }}>
         <img
           src={circleOrnament}
           alt=""
-          className="h-[140%] w-auto opacity-20"
-          style={{ filter: "brightness(0) saturate(100%)" }}
+          className="h-[160%] w-auto opacity-15"
+          style={{ filter: "brightness(0) invert(1)" }}
         />
       </div>
       <div className="absolute inset-0 bg-foreground/5" />
