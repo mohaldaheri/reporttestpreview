@@ -15,16 +15,14 @@ import { exportPreviewToPdf } from "@/lib/exportPdf";
 import { toast } from "sonner";
 
 const initialData: ReportData = {
-  title: "مبادرة استقبال ضيوف الرحمن",
-  location: "مقر الشركة - جدة",
-  date: "2026-04-15",
-  beneficiaries: "120",
-  executor: "فريق خدمة الحجاج",
-  objective:
-    "تعزيز جودة الترحيب والتنظيم ورفع جاهزية فرق العمل بما ينعكس على تجربة المستفيدين في بداية الخدمة.",
-  description:
-    "نفذت الشركة فعالية تعريفية وتنظيمية شملت استقبال المستفيدين، توضيح مسار الخدمات، وتقديم رسائل ترحيبية تعكس الهوية البصرية المعتمدة مع توثيق الحدث بالصور.",
-  reporter: "محمد الظاهري",
+  title: "",
+  location: "",
+  date: "",
+  beneficiaries: "",
+  executor: "",
+  objective: "",
+  description: "",
+  reporter: "",
 };
 
 export default function Index() {

@@ -1,12 +1,6 @@
 import { forwardRef } from "react";
 import ReportHeader from "./ReportHeader";
 
-const sampleImages = [
-  "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80",
-  "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=900&q=80",
-  "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=900&q=80",
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80",
-];
 
 export interface ReportData {
   title: string;
@@ -21,7 +15,7 @@ export interface ReportData {
 
 const EventReportPreview = forwardRef<HTMLDivElement, { data: ReportData; images: string[] }>(
   ({ data, images }, ref) => {
-  const shown = images.length ? images.slice(0, 4) : sampleImages;
+  const shown = images.slice(0, 4);
 
   return (
     <div
@@ -78,15 +72,19 @@ const EventReportPreview = forwardRef<HTMLDivElement, { data: ReportData; images
             <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
               <div className="mb-3 text-sm font-bold text-primary-dark">شواهد الفعالية</div>
               <div className="grid grid-cols-2 gap-3">
-                {Array.from({ length: 4 }).map((_, i) => (
+                {shown.length > 0 ? shown.map((src, i) => (
                   <div key={i} className="aspect-[4/3] overflow-hidden rounded-xl bg-brand-bg">
                     <img
-                      src={shown[i] || sampleImages[i]}
+                      src={src}
                       alt={`evidence-${i + 1}`}
                       className="h-full w-full object-cover"
                     />
                   </div>
-                ))}
+                )) : (
+                  <div className="col-span-2 flex aspect-[4/3] items-center justify-center rounded-xl bg-brand-bg text-sm text-muted-foreground">
+                    لا توجد صور مرفقة
+                  </div>
+                )}
               </div>
             </div>
           </div>
