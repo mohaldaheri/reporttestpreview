@@ -73,7 +73,7 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
         <div className="text-base font-semibold md:text-2xl">
           الخماسية السعودية لخدمات حجاج الداخل
         </div>
-        <div className="mt-1 text-sm font-bold text-brand-beige md:text-base">
+        <div className="mt-1 text-sm font-bold text-brand-brown md:text-base">
           تقرير فعالية
         </div>
       </div>
