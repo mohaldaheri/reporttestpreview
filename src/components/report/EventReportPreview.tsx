@@ -13,91 +13,140 @@ export interface ReportData {
   reporter: string;
 }
 
+const clampStyle = (lines: number) => ({
+  display: "-webkit-box",
+  WebkitBoxOrient: "vertical" as const,
+  WebkitLineClamp: lines,
+  overflow: "hidden",
+});
+
 const EventReportPreview = forwardRef<HTMLDivElement, { data: ReportData; images: string[] }>(
   ({ data, images }, ref) => {
   const shown = images.slice(0, 4);
+  const evidenceSlots = Array.from({ length: 4 }, (_, index) => shown[index] ?? null);
+  const metaItems = [
+    ["مكان التنفيذ", data.location],
+    ["تاريخ التنفيذ", data.date],
+    ["عدد المستفيدين", data.beneficiaries],
+    ["المنفذ", data.executor],
+  ] as const;
 
   return (
     <div
       ref={ref}
-      className="mx-auto w-full max-w-[820px] rounded-3xl bg-card p-4 shadow-2xl md:p-6"
+      className="mx-auto w-full overflow-x-auto pb-2"
       dir="rtl"
       data-pdf-root
     >
-      <div className="relative overflow-hidden rounded-3xl border border-border">
-        <div data-pdf-section>
-          <ReportHeader compact />
-        </div>
+      <div className="flex min-w-fit flex-col items-center gap-6">
+        <div className="overflow-hidden rounded-[32px] shadow-2xl">
+          <div data-pdf-page className="h-[1123px] w-[794px] overflow-hidden bg-card">
+            <div className="flex h-full flex-col bg-card">
+              <ReportHeader compact fixedLayout />
 
-        <div className="relative px-6 pb-7 pt-5">
-          {/* Title */}
-          <div className="rounded-2xl border border-border bg-brand-bg px-5 py-4 shadow-sm" data-pdf-section>
-            <div className="mb-2 text-xs font-bold text-primary-dark">عنوان الفعالية</div>
-            <div className="text-xl font-bold text-brand-brown">{data.title || "—"}</div>
-          </div>
+              <div className="flex flex-1 flex-col px-8 pb-8 pt-6">
+                <div className="flex min-h-[104px] flex-col justify-center rounded-[24px] border border-border bg-brand-bg px-6 py-5">
+                  <div className="mb-2 text-xs font-bold text-primary-dark">عنوان الفعالية</div>
+                  <div className="text-[28px] font-bold leading-[1.5] text-brand-brown" style={clampStyle(2)}>
+                    {data.title || "—"}
+                  </div>
+                </div>
 
-          {/* Meta grid */}
-          <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4" data-pdf-section>
-            {([
-              ["مكان التنفيذ", data.location],
-              ["تاريخ التنفيذ", data.date],
-              ["عدد المستفيدين", data.beneficiaries],
-              ["المنفذ", data.executor],
-            ] as const).map(([label, value]) => (
-              <div key={label} className="rounded-2xl border border-border bg-card px-4 py-3 shadow-sm">
-                <div className="text-[11px] font-bold text-primary-dark">{label}</div>
-                <div className="mt-1 line-clamp-2 text-sm font-semibold text-brand-text">
-                  {value || "—"}
+                <div className="mt-4 grid grid-cols-4 gap-3">
+                  {metaItems.map(([label, value]) => (
+                    <div key={label} className="flex min-h-[92px] flex-col justify-between rounded-[22px] border border-border bg-card px-4 py-4 shadow-sm">
+                      <div className="text-xs font-bold text-primary-dark">{label}</div>
+                      <div className="text-sm font-semibold leading-6 text-brand-text" style={clampStyle(2)}>
+                        {value || "—"}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-5 grid flex-1 grid-cols-[290px_minmax(0,1fr)] gap-4">
+                  <div className="rounded-[24px] border border-border bg-card p-5 shadow-sm">
+                    <div className="mb-3 text-base font-bold text-primary-dark">هدف الفعالية</div>
+                    <p className="text-sm leading-8 text-brand-text" style={clampStyle(10)}>
+                      {data.objective || "—"}
+                    </p>
+                  </div>
+
+                  <div className="rounded-[24px] border border-border bg-card p-5 shadow-sm">
+                    <div className="mb-3 text-base font-bold text-primary-dark">وصف الفعالية</div>
+                    <p className="text-sm leading-8 text-brand-text" style={clampStyle(16)}>
+                      {data.description || "—"}
+                    </p>
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
-
-          {/* Content */}
-          <div className="mt-5 grid gap-4 md:grid-cols-[1fr_1.25fr]">
-            <div className="rounded-2xl border border-border bg-card p-4 shadow-sm" data-pdf-section>
-              <div className="mb-2 text-sm font-bold text-primary-dark">هدف الفعالية</div>
-              <p className="line-clamp-5 text-sm leading-7 text-brand-text">
-                {data.objective || "—"}
-              </p>
-              <div
-                className="my-4 h-px"
-                style={{
-                  background: `linear-gradient(to left, transparent, hsl(var(--brand-beige)), transparent)`,
-                }}
-              />
-              <div className="mb-2 text-sm font-bold text-primary-dark">وصف الفعالية</div>
-              <p className="line-clamp-6 text-sm leading-7 text-brand-text">
-                {data.description || "—"}
-              </p>
             </div>
+          </div>
+        </div>
 
-            <div className="rounded-2xl border border-border bg-card p-4 shadow-sm" data-pdf-section>
-              <div className="mb-3 text-sm font-bold text-primary-dark">شواهد الفعالية</div>
-              <div className="grid grid-cols-2 gap-3">
-                {shown.length > 0 ? shown.map((src, i) => (
-                  <div key={i} className="aspect-[4/3] overflow-hidden rounded-xl bg-brand-bg">
-                    <img
-                      src={src}
-                      alt={`evidence-${i + 1}`}
-                      className="h-full w-full object-cover"
-                    />
+        <div className="overflow-hidden rounded-[32px] shadow-2xl">
+          <div data-pdf-page className="h-[1123px] w-[794px] overflow-hidden bg-card">
+            <div className="flex h-full flex-col px-8 py-8">
+              <div className="rounded-[24px] border border-border bg-brand-bg px-6 py-5 shadow-sm">
+                <div className="grid grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)] gap-4">
+                  <div>
+                    <div className="text-xs font-bold text-primary-dark">عنوان الفعالية</div>
+                    <div className="mt-2 text-lg font-bold leading-8 text-brand-brown" style={clampStyle(2)}>
+                      {data.title || "—"}
+                    </div>
                   </div>
-                )) : (
-                  <div className="col-span-2 flex aspect-[4/3] items-center justify-center rounded-xl bg-brand-bg text-sm text-muted-foreground">
-                    لا توجد صور مرفقة
+                  <div className="space-y-3">
+                    <div>
+                      <div className="text-xs font-bold text-primary-dark">مكان التنفيذ</div>
+                      <div className="mt-1 text-sm font-semibold leading-7 text-brand-text" style={clampStyle(2)}>
+                        {data.location || "—"}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-xs font-bold text-primary-dark">تاريخ التنفيذ</div>
+                      <div className="mt-1 text-sm font-semibold leading-7 text-brand-text">{data.date || "—"}</div>
+                    </div>
                   </div>
-                )}
+                  <div className="space-y-3">
+                    <div>
+                      <div className="text-xs font-bold text-primary-dark">المنفذ</div>
+                      <div className="mt-1 text-sm font-semibold leading-7 text-brand-text" style={clampStyle(2)}>
+                        {data.executor || "—"}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-xs font-bold text-primary-dark">عدد المستفيدين</div>
+                      <div className="mt-1 text-sm font-semibold leading-7 text-brand-text">{data.beneficiaries || "—"}</div>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
 
-          {/* Reporter */}
-          <div className="mt-6 flex justify-end pt-5" data-pdf-section>
-            <div className="min-w-[180px] text-right">
-              <div className="text-sm font-bold text-primary-dark">معد التقرير</div>
-              <div className="mt-2 text-base font-semibold text-brand-brown">
-                {data.reporter || "—"}
+              <div className="mt-5 flex-1 rounded-[24px] border border-border bg-card p-5 shadow-sm">
+                <div className="mb-4 text-lg font-bold text-brand-brown">شواهد الفعالية</div>
+                <div className="grid grid-cols-2 gap-4">
+                  {evidenceSlots.map((src, i) => (
+                    <div key={i} className="overflow-hidden rounded-[20px] border border-border bg-brand-bg">
+                      {src ? (
+                        <img
+                          src={src}
+                          alt={`evidence-${i + 1}`}
+                          className="h-[320px] w-full object-cover"
+                        />
+                      ) : (
+                        <div className="flex h-[320px] items-center justify-center px-6 text-sm font-medium text-muted-foreground">
+                          لا توجد صورة مرفقة
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-5 rounded-[24px] border border-border bg-card px-6 py-5 shadow-sm">
+                <div className="text-sm font-bold text-primary-dark">معد التقرير</div>
+                <div className="mt-3 text-2xl font-semibold text-brand-brown" style={clampStyle(2)}>
+                  {data.reporter || "—"}
+                </div>
               </div>
             </div>
           </div>

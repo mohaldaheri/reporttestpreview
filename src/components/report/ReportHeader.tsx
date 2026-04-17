@@ -16,12 +16,14 @@ function LogoPlaceholder({ text, className = "" }: { text: string; className?: s
   );
 }
 
-export default function ReportHeader({ compact = false }: { compact?: boolean }) {
+export default function ReportHeader({ compact = false, fixedLayout = false }: { compact?: boolean; fixedLayout?: boolean }) {
   return (
     <div
       className={`relative overflow-hidden text-primary-foreground ${
         compact
-          ? "rounded-t-3xl px-6 pb-4 pt-4 md:px-7 md:pb-5 md:pt-5"
+          ? fixedLayout
+            ? "rounded-t-[32px] px-7 pb-5 pt-5"
+            : "rounded-t-3xl px-6 pb-4 pt-4 md:px-7 md:pb-5 md:pt-5"
           : "px-6 py-5 md:px-8 md:py-6"
       }`}
       style={{
@@ -46,12 +48,12 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
           <img
             src={hajjMinistryLogo}
             alt="وزارة الحج والعمرة"
-            className="h-16 w-auto md:h-20"
+            className={fixedLayout ? "h-20 w-auto" : "h-16 w-auto md:h-20"}
           />
           <img
             src={saadaLogo}
             alt="فريق السعادة"
-            className="h-20 w-auto md:h-24"
+            className={fixedLayout ? "h-24 w-auto" : "h-20 w-auto md:h-24"}
           />
         </div>
         {/* Khumasia (left) and Hayyakum (right) side by side */}
@@ -59,21 +61,21 @@ export default function ReportHeader({ compact = false }: { compact?: boolean })
           <img
             src={khumasiaLogo}
             alt="الخماسية السعودية"
-            className="h-16 w-auto md:h-24"
+            className={fixedLayout ? "h-24 w-auto" : "h-16 w-auto md:h-24"}
             />
           <img
             src={hayyakumLogo}
             alt="حياكم الله"
-            className={compact ? "h-20 w-auto md:h-28" : "h-24 w-auto md:h-36"}
+            className={fixedLayout ? (compact ? "h-28 w-auto" : "h-36 w-auto") : (compact ? "h-20 w-auto md:h-28" : "h-24 w-auto md:h-36")}
           />
         </div>
       </div>
 
       <div className="relative mt-4 text-right">
-        <div className="text-base font-semibold md:text-2xl">
+        <div className={fixedLayout ? "text-2xl font-semibold" : "text-base font-semibold md:text-2xl"}>
           الخماسية السعودية لخدمات حجاج الداخل
         </div>
-        <div className="mt-1 text-sm font-bold text-brand-brown md:text-base">
+        <div className={fixedLayout ? "mt-1 text-base font-bold text-brand-brown" : "mt-1 text-sm font-bold text-brand-brown md:text-base"}>
           تقرير فعالية
         </div>
       </div>
