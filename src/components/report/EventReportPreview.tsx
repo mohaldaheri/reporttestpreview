@@ -22,19 +22,22 @@ const EventReportPreview = forwardRef<HTMLDivElement, { data: ReportData; images
       ref={ref}
       className="mx-auto w-full max-w-[820px] rounded-3xl bg-card p-4 shadow-2xl md:p-6"
       dir="rtl"
+      data-pdf-root
     >
       <div className="relative overflow-hidden rounded-3xl border border-border">
-        <ReportHeader compact />
+        <div data-pdf-section>
+          <ReportHeader compact />
+        </div>
 
         <div className="relative px-6 pb-7 pt-5">
           {/* Title */}
-          <div className="rounded-2xl border border-border bg-brand-bg px-5 py-4 shadow-sm">
+          <div className="rounded-2xl border border-border bg-brand-bg px-5 py-4 shadow-sm" data-pdf-section>
             <div className="mb-2 text-xs font-bold text-primary-dark">عنوان الفعالية</div>
             <div className="text-xl font-bold text-brand-brown">{data.title || "—"}</div>
           </div>
 
           {/* Meta grid */}
-          <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
+          <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4" data-pdf-section>
             {([
               ["مكان التنفيذ", data.location],
               ["تاريخ التنفيذ", data.date],
@@ -52,7 +55,7 @@ const EventReportPreview = forwardRef<HTMLDivElement, { data: ReportData; images
 
           {/* Content */}
           <div className="mt-5 grid gap-4 md:grid-cols-[1fr_1.25fr]">
-            <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+            <div className="rounded-2xl border border-border bg-card p-4 shadow-sm" data-pdf-section>
               <div className="mb-2 text-sm font-bold text-primary-dark">هدف الفعالية</div>
               <p className="line-clamp-5 text-sm leading-7 text-brand-text">
                 {data.objective || "—"}
@@ -69,7 +72,7 @@ const EventReportPreview = forwardRef<HTMLDivElement, { data: ReportData; images
               </p>
             </div>
 
-            <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+            <div className="rounded-2xl border border-border bg-card p-4 shadow-sm" data-pdf-section>
               <div className="mb-3 text-sm font-bold text-primary-dark">شواهد الفعالية</div>
               <div className="grid grid-cols-2 gap-3">
                 {shown.length > 0 ? shown.map((src, i) => (
@@ -90,7 +93,7 @@ const EventReportPreview = forwardRef<HTMLDivElement, { data: ReportData; images
           </div>
 
           {/* Reporter */}
-          <div className="mt-6 flex justify-end pt-5">
+          <div className="mt-6 flex justify-end pt-5" data-pdf-section>
             <div className="min-w-[180px] text-right">
               <div className="text-sm font-bold text-primary-dark">معد التقرير</div>
               <div className="mt-2 text-base font-semibold text-brand-brown">
