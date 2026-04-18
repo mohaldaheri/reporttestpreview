@@ -104,7 +104,7 @@ const EventReportPreview = forwardRef<HTMLDivElement, { data: ReportData; images
 
                     {/* Left column: evidence */}
                     <div className="flex flex-col rounded-[24px] border border-border bg-card p-5 shadow-sm">
-                      <div className="mb-3 text-base font-bold text-primary-dark text-left">شواهد الفعالية</div>
+                      <div className="mb-3 text-base font-bold text-primary-dark text-right">شواهد الفعالية</div>
                       <div className="grid grid-cols-2 gap-3">
                         {evidenceSlots.map((src, i) => (
                           <div
@@ -129,7 +129,7 @@ const EventReportPreview = forwardRef<HTMLDivElement, { data: ReportData; images
                   </div>
 
                   {/* Reporter footer */}
-                  <div className="mt-auto pt-4">
+                  <div className="mt-auto pt-4 pb-20">
                     <div className="text-base font-bold text-primary-dark">معد التقرير</div>
                     <div
                       className="mt-2 text-lg font-semibold text-brand-brown"
