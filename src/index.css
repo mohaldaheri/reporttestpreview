@@ -125,14 +125,19 @@
   }
   .report-preview-scaler {
     position: relative;
+    display: flex;
+    justify-content: center;
     width: calc(var(--preview-page-width) * var(--preview-scale));
     height: calc((var(--preview-page-height) * var(--preview-scale)) + var(--preview-shadow-space));
     margin-inline: auto;
     overflow: visible;
   }
   .report-preview-stage {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 50%;
     width: var(--preview-page-width);
-    transform: scale(var(--preview-scale));
+    transform: translateX(-50%) scale(var(--preview-scale));
     transform-origin: top center;
     will-change: transform;
   }
