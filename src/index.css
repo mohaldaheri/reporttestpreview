@@ -115,12 +115,13 @@
   .report-preview-root {
     --preview-page-height: 1123px;
     --preview-scale: 1;
-    overflow-x: hidden;
-    overflow-y: visible;
+    overflow: visible;
   }
   .report-preview-scaler {
     transform-origin: top center;
-    height: calc(var(--preview-page-height) * var(--preview-scale));
+    /* Reserve room for the scaled page + the gap-6 (24px) above and a small
+       safety margin so the bottom (reporter footer + shadow) is never clipped. */
+    height: calc((var(--preview-page-height) + 48px) * var(--preview-scale));
   }
   @media (max-width: 1024px) {
     .report-preview-scaler {
