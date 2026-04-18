@@ -120,21 +120,22 @@
   }
   @media (max-width: 1024px) {
     .report-preview-scaler {
-      transform: scale(var(--preview-scale, 0.85));
-      height: calc(1180px * var(--preview-scale, 0.85));
+      --preview-scale: 0.85;
+      transform: scale(var(--preview-scale));
+      height: calc(1140px * var(--preview-scale));
     }
   }
   @media (max-width: 820px) {
-    .report-preview-scaler { --preview-scale: 0.7; }
+    .report-preview-scaler { --preview-scale: 0.7; height: calc(1140px * 0.7); }
   }
   @media (max-width: 640px) {
-    .report-preview-scaler { --preview-scale: 0.5; }
+    .report-preview-scaler { --preview-scale: 0.5; height: calc(1140px * 0.5); }
   }
   @media (max-width: 480px) {
-    .report-preview-scaler { --preview-scale: 0.42; }
+    .report-preview-scaler { --preview-scale: 0.42; height: calc(1140px * 0.42); }
   }
   @media (max-width: 380px) {
-    .report-preview-scaler { --preview-scale: 0.36; }
+    .report-preview-scaler { --preview-scale: 0.36; height: calc(1140px * 0.36); }
   }
   /* When cloned into the off-screen export stage, neutralize transform */
   [data-export-mode="pdf"] .report-preview-scaler {
