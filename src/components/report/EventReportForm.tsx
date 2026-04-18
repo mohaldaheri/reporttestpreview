@@ -73,9 +73,9 @@ export default function EventReportForm({ form, images, onUpdate, onFilesChange,
         </div>
 
         <div className="space-y-2 text-right">
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-muted-foreground">{imageCountText}</span>
+          <div className="flex items-center justify-between" dir="rtl">
             <Label>شواهد الفعالية</Label>
+            <span className="text-xs text-muted-foreground" dir="ltr">{imageCountText}</span>
           </div>
           <button
             type="button"
