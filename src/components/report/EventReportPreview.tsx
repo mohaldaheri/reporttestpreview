@@ -35,11 +35,11 @@ const EventReportPreview = forwardRef<HTMLDivElement, { data: ReportData; images
     return (
       <div
         ref={ref}
-        className="mx-auto w-full overflow-x-auto pb-2"
+        className="report-preview-root mx-auto w-full pb-2"
         dir="rtl"
         data-pdf-root
       >
-        <div className="flex min-w-fit flex-col items-center gap-6">
+        <div className="report-preview-scaler flex flex-col items-center gap-6">
           <div className="overflow-hidden rounded-[32px] shadow-2xl">
             <div data-pdf-page className="h-[1123px] w-[794px] overflow-hidden bg-card">
               <div className="flex h-full flex-col bg-card">
