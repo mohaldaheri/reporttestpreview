@@ -129,7 +129,7 @@ const EventReportPreview = forwardRef<HTMLDivElement, { data: ReportData; images
                   </div>
 
                   {/* Reporter footer */}
-                  <div className="mt-auto pt-4 pb-20">
+                  <div className="mt-auto pt-4 pb-[40px] pr-[57px]">
                     <div className="text-base font-bold text-primary-dark">معد التقرير</div>
                     <div
                       className="mt-2 text-lg font-semibold text-brand-brown"
