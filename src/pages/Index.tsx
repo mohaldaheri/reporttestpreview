@@ -89,13 +89,13 @@ export default function Index() {
   }, []);
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-b from-background to-brand-bg" dir="rtl">
-      <div className="mx-auto max-w-7xl px-4 py-6 md:px-6 lg:px-8">
-        <div className="mb-6 overflow-hidden rounded-3xl shadow-xl">
+    <div className="min-h-screen w-full overflow-x-hidden bg-gradient-to-b from-background to-brand-bg" dir="rtl">
+      <div className="mx-auto max-w-7xl px-3 py-4 sm:px-4 sm:py-6 md:px-6 lg:px-8">
+        <div className="mb-4 overflow-hidden rounded-2xl shadow-xl sm:mb-6 sm:rounded-3xl">
           <ReportHeader />
         </div>
 
-        <div className="grid gap-6 xl:grid-cols-[430px_1fr]">
+        <div className="grid gap-4 sm:gap-6 xl:grid-cols-[430px_1fr]">
           <EventReportForm
             form={form}
             images={images}
@@ -106,10 +106,10 @@ export default function Index() {
             exporting={exporting}
           />
 
-          <div className="space-y-3">
+          <div className="space-y-3 min-w-0">
             <div className="text-right">
-              <h2 className="text-lg font-bold text-brand-brown">معاينة تصميم التقرير</h2>
-              <p className="text-sm text-muted-foreground">
+              <h2 className="text-base font-bold text-brand-brown sm:text-lg">معاينة تصميم التقرير</h2>
+              <p className="text-xs text-muted-foreground sm:text-sm">
                 اضغط "إصدار التقرير" لتحميل ملف PDF مطابق لهذه المعاينة.
               </p>
             </div>
