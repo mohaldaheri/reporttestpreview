@@ -190,6 +190,12 @@ async function renderPage(page: HTMLElement): Promise<HTMLCanvasElement> {
 
 export async function exportPreviewToPdf(element: HTMLElement, fileName = "تقرير-الفعالية.pdf") {
   const { clone, cleanup } = createExportStage(element);
+  const previousScrollX = window.scrollX;
+  const previousScrollY = window.scrollY;
+  // Scroll to top before capture: iOS Safari uses the visual viewport for
+  // html2canvas, and any scroll offset can shift the captured area.
+  window.scrollTo(0, 0);
+
   const pdf = new jsPDF({
     orientation: "portrait",
     unit: "mm",
@@ -211,5 +217,6 @@ export async function exportPreviewToPdf(element: HTMLElement, fileName = "تق�
     pdf.save(fileName);
   } finally {
     cleanup();
+    window.scrollTo(previousScrollX, previousScrollY);
   }
 }
