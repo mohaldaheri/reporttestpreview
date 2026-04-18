@@ -109,16 +109,23 @@ async function waitForFonts(): Promise<void> {
 
 function createExportStage(element: HTMLElement) {
   const stage = document.createElement("div");
+  // Keep the stage inside the viewport so mobile browsers (esp. iOS Safari)
+  // actually paint/layout the cloned element. Hide it visually with clip-path
+  // and zero opacity instead of moving it far off-screen.
   stage.style.position = "fixed";
-  stage.style.left = "-20000px";
+  stage.style.left = "0";
   stage.style.top = "0";
   stage.style.width = `${EXPORT_PAGE_WIDTH_PX}px`;
+  stage.style.height = "auto";
   stage.style.padding = "0";
   stage.style.margin = "0";
   stage.style.opacity = "0";
   stage.style.pointerEvents = "none";
   stage.style.background = "#ffffff";
   stage.style.zIndex = "-1";
+  stage.style.overflow = "visible";
+  stage.style.clipPath = "inset(0)";
+  stage.setAttribute("aria-hidden", "true");
 
   const clone = element.cloneNode(true) as HTMLElement;
   clone.style.width = `${EXPORT_PAGE_WIDTH_PX}px`;
