@@ -54,13 +54,36 @@ function blobToDataURL(blob: Blob): Promise<string> {
 function imgToDataURL(img: HTMLImageElement): Promise<string | null> {
   return new Promise((resolve) => {
     try {
+      const bounds = img.getBoundingClientRect();
+      const naturalWidth = img.naturalWidth || img.width;
+      const naturalHeight = img.naturalHeight || img.height;
+      const renderedWidth = Math.ceil(bounds.width || img.width || naturalWidth);
+      const renderedHeight = Math.ceil(bounds.height || img.height || naturalHeight);
+
+      if (!naturalWidth || !naturalHeight || !renderedWidth || !renderedHeight) {
+        return resolve(null);
+      }
+
+      const maxExportWidth = Math.max(renderedWidth * CAPTURE_SCALE, renderedWidth);
+      const maxExportHeight = Math.max(renderedHeight * CAPTURE_SCALE, renderedHeight);
+      const scale = Math.min(1, maxExportWidth / naturalWidth, maxExportHeight / naturalHeight);
+      const targetWidth = Math.max(1, Math.round(naturalWidth * scale));
+      const targetHeight = Math.max(1, Math.round(naturalHeight * scale));
+
       const canvas = document.createElement("canvas");
-      canvas.width = img.naturalWidth || img.width;
-      canvas.height = img.naturalHeight || img.height;
-      const ctx = canvas.getContext("2d");
+      canvas.width = targetWidth;
+      canvas.height = targetHeight;
+
+      const ctx = canvas.getContext("2d", { alpha: false });
       if (!ctx) return resolve(null);
-      ctx.drawImage(img, 0, 0);
-      resolve(canvas.toDataURL("image/png"));
+
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, targetWidth, targetHeight);
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
+      ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+
+      resolve(canvas.toDataURL("image/jpeg", 0.92));
     } catch {
       resolve(null);
     }
