@@ -1,5 +1,23 @@
-import { forwardRef } from "react";
+import { forwardRef, useEffect, useRef, useState, type CSSProperties, type ForwardedRef, type MutableRefObject } from "react";
 import ReportHeader from "./ReportHeader";
+
+const PAGE_WIDTH = 794;
+const PAGE_HEIGHT = 1123;
+const PREVIEW_SHADOW_SPACE = 32;
+
+const assignForwardedRef = (
+  forwardedRef: ForwardedRef<HTMLDivElement>,
+  node: HTMLDivElement | null,
+) => {
+  if (typeof forwardedRef === "function") {
+    forwardedRef(node);
+    return;
+  }
+
+  if (forwardedRef) {
+    (forwardedRef as MutableRefObject<HTMLDivElement | null>).current = node;
+  }
+};
 
 export interface ReportData {
   title: string;
@@ -23,6 +41,8 @@ const clampStyle = (lines: number) => ({
 
 const EventReportPreview = forwardRef<HTMLDivElement, { data: ReportData; images: string[] }>(
   ({ data, images }, ref) => {
+    const rootRef = useRef<HTMLDivElement | null>(null);
+    const [scale, setScale] = useState(1);
     const shown = images.slice(0, 4);
     const evidenceSlots = Array.from({ length: 4 }, (_, index) => shown[index] ?? null);
     const metaItems = [
@@ -31,111 +51,141 @@ const EventReportPreview = forwardRef<HTMLDivElement, { data: ReportData; images
       ["عدد المستفيدين", data.beneficiaries],
       ["المنفذ", data.executor],
     ] as const;
+    const previewStyle = {
+      "--preview-scale": scale.toString(),
+      "--preview-page-width": `${PAGE_WIDTH}px`,
+      "--preview-page-height": `${PAGE_HEIGHT}px`,
+      "--preview-shadow-space": `${PREVIEW_SHADOW_SPACE}px`,
+    } as CSSProperties;
+
+    useEffect(() => {
+      const node = rootRef.current;
+      if (!node) return;
+
+      const updateScale = () => {
+        const nextScale = Math.min(1, node.clientWidth / PAGE_WIDTH);
+        setScale((current) => (Math.abs(current - nextScale) < 0.001 ? current : nextScale));
+      };
+
+      updateScale();
+
+      if (typeof ResizeObserver === "undefined") {
+        window.addEventListener("resize", updateScale);
+        return () => window.removeEventListener("resize", updateScale);
+      }
+
+      const observer = new ResizeObserver(updateScale);
+      observer.observe(node);
+
+      return () => observer.disconnect();
+    }, []);
 
     return (
       <div
-        ref={ref}
-        className="report-preview-root mx-auto w-full pb-2"
+        ref={(node) => {
+          rootRef.current = node;
+          assignForwardedRef(ref, node);
+        }}
+        className="report-preview-root mx-auto w-full pb-4"
         dir="rtl"
         data-pdf-root
+        style={previewStyle}
       >
-        <div className="report-preview-scaler flex flex-col items-center gap-6">
-          <div className="overflow-hidden rounded-[32px] shadow-2xl">
-            <div data-pdf-page className="h-[1123px] w-[794px] overflow-hidden bg-card">
-              <div className="flex h-full flex-col bg-card">
-                <ReportHeader compact fixedLayout />
+        <div className="report-preview-shell">
+          <div className="report-preview-scaler">
+            <div className="report-preview-stage">
+              <div className="overflow-hidden rounded-[32px] shadow-2xl">
+                <div data-pdf-page className="h-[1123px] w-[794px] overflow-hidden bg-card">
+                  <div className="flex h-full flex-col bg-card">
+                    <ReportHeader compact fixedLayout />
 
-                <div className="flex flex-1 flex-col px-8 pb-6 pt-5">
-                  {/* Title */}
-                  <div className="flex h-[88px] flex-col justify-center rounded-[24px] border border-border bg-brand-bg px-6 py-3">
-                    <div className="mb-1 text-xs font-bold text-primary-dark">عنوان الفعالية</div>
-                    <div
-                      className="text-[22px] font-bold leading-[1.4] text-brand-brown"
-                      style={clampStyle(1)}
-                    >
-                      {data.title || "—"}
-                    </div>
-                  </div>
-
-                  {/* Meta row */}
-                  <div className="mt-4 grid grid-cols-4 gap-3">
-                    {metaItems.map(([label, value]) => (
-                      <div
-                        key={label}
-                        className="flex h-[80px] flex-col justify-center gap-1 rounded-[22px] border border-border bg-card px-4 py-3 shadow-sm"
-                      >
-                        <div className="text-xs font-bold text-primary-dark" style={clampStyle(1)}>
-                          {label}
-                        </div>
+                    <div className="flex flex-1 flex-col px-8 pb-6 pt-5">
+                      <div className="flex h-[88px] flex-col justify-center rounded-[24px] border border-border bg-brand-bg px-6 py-3">
+                        <div className="mb-1 text-xs font-bold text-primary-dark">عنوان الفعالية</div>
                         <div
-                          className="text-sm font-semibold leading-6 text-brand-text"
+                          className="text-[22px] font-bold leading-[1.4] text-brand-brown"
                           style={clampStyle(1)}
                         >
-                          {value || "—"}
+                          {data.title || "—"}
                         </div>
                       </div>
-                    ))}
-                  </div>
 
-                  {/* Two columns: right (objective + description) | left (evidence) */}
-                  <div className="mt-4 grid grid-cols-2 gap-4">
-                    {/* Right column (RTL first) */}
-                    <div className="flex flex-col gap-4">
-                      <div className="rounded-[24px] border border-border bg-card p-5 shadow-sm">
-                        <div className="mb-2 text-base font-bold text-primary-dark">هدف الفعالية</div>
-                        <p
-                          className="text-sm leading-7 text-brand-text"
-                          style={{ ...clampStyle(4), minHeight: "112px" }}
-                        >
-                          {data.objective || "—"}
-                        </p>
-                      </div>
-
-                      <div className="rounded-[24px] border border-border bg-card p-5 shadow-sm">
-                        <div className="mb-2 text-base font-bold text-primary-dark">وصف الفعالية</div>
-                        <p
-                          className="text-sm leading-7 text-brand-text"
-                          style={{ ...clampStyle(4), minHeight: "112px" }}
-                        >
-                          {data.description || "—"}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Left column: evidence */}
-                    <div className="flex flex-col rounded-[24px] border border-border bg-card p-5 shadow-sm">
-                      <div className="mb-3 text-base font-bold text-primary-dark text-right">شواهد الفعالية</div>
-                      <div className="grid grid-cols-2 gap-3">
-                        {evidenceSlots.map((src, i) => (
+                      <div className="mt-4 grid grid-cols-4 gap-3">
+                        {metaItems.map(([label, value]) => (
                           <div
-                            key={i}
-                            className="overflow-hidden rounded-[16px] border border-border bg-brand-bg"
+                            key={label}
+                            className="flex h-[80px] flex-col justify-center gap-1 rounded-[22px] border border-border bg-card px-4 py-3 shadow-sm"
                           >
-                            {src ? (
-                              <img
-                                src={src}
-                                alt={`evidence-${i + 1}`}
-                                className="h-[150px] w-full object-cover"
-                              />
-                            ) : (
-                              <div className="flex h-[150px] items-center justify-center px-2 text-xs font-medium text-muted-foreground">
-                                لا توجد صورة مرفقة
-                              </div>
-                            )}
+                            <div className="text-xs font-bold text-primary-dark" style={clampStyle(1)}>
+                              {label}
+                            </div>
+                            <div
+                              className="text-sm font-semibold leading-6 text-brand-text"
+                              style={clampStyle(1)}
+                            >
+                              {value || "—"}
+                            </div>
                           </div>
                         ))}
                       </div>
-                    </div>
-                  </div>
 
-                  {/* Reporter footer */}
-                  <div className="mt-auto pt-4 pb-[40px] pr-[57px]">
-                    <div className="text-base font-bold text-primary-dark">معد التقرير</div>
-                    <div
-                      className="mt-2 text-lg font-semibold text-brand-brown"
-                      style={clampStyle(1)}
-                    >
-                      {data.reporter || "—"}
+                      <div className="mt-4 grid grid-cols-2 gap-4">
+                        <div className="flex flex-col gap-4">
+                          <div className="rounded-[24px] border border-border bg-card p-5 shadow-sm">
+                            <div className="mb-2 text-base font-bold text-primary-dark">هدف الفعالية</div>
+                            <p
+                              className="text-sm leading-7 text-brand-text"
+                              style={{ ...clampStyle(4), minHeight: "112px" }}
+                            >
+                              {data.objective || "—"}
+                            </p>
+                          </div>
+
+                          <div className="rounded-[24px] border border-border bg-card p-5 shadow-sm">
+                            <div className="mb-2 text-base font-bold text-primary-dark">وصف الفعالية</div>
+                            <p
+                              className="text-sm leading-7 text-brand-text"
+                              style={{ ...clampStyle(4), minHeight: "112px" }}
+                            >
+                              {data.description || "—"}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col rounded-[24px] border border-border bg-card p-5 shadow-sm">
+                          <div className="mb-3 text-right text-base font-bold text-primary-dark">شواهد الفعالية</div>
+                          <div className="grid grid-cols-2 gap-3">
+                            {evidenceSlots.map((src, i) => (
+                              <div
+                                key={i}
+                                className="overflow-hidden rounded-[16px] border border-border bg-brand-bg"
+                              >
+                                {src ? (
+                                  <img
+                                    src={src}
+                                    alt={`evidence-${i + 1}`}
+                                    className="h-[150px] w-full object-cover"
+                                  />
+                                ) : (
+                                  <div className="flex h-[150px] items-center justify-center px-2 text-xs font-medium text-muted-foreground">
+                                    لا توجد صورة مرفقة
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="mt-auto pt-4 pb-[40px] pr-[57px]">
+                        <div className="text-base font-bold text-primary-dark">معد التقرير</div>
+                        <div
+                          className="mt-2 text-lg font-semibold text-brand-brown"
+                          style={clampStyle(1)}
+                        >
+                          {data.reporter || "—"}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
