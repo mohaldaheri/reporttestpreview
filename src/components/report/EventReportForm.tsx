@@ -91,7 +91,10 @@ export default function EventReportForm({ form, images, onUpdate, onFilesChange,
             multiple
             accept="image/*"
             className="hidden"
-            onChange={(e) => onFilesChange(e.target.files)}
+            onChange={(e) => {
+              onFilesChange(e.target.files);
+              e.target.value = "";
+            }}
           />
         </div>
 
