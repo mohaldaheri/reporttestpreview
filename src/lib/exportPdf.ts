@@ -51,6 +51,38 @@ function blobToDataURL(blob: Blob): Promise<string> {
   });
 }
 
+function hasTransparentPixels(img: HTMLImageElement): boolean {
+  try {
+    const naturalWidth = img.naturalWidth || img.width;
+    const naturalHeight = img.naturalHeight || img.height;
+    if (!naturalWidth || !naturalHeight) return false;
+
+    const sampleMaxSide = 64;
+    const scale = Math.min(1, sampleMaxSide / Math.max(naturalWidth, naturalHeight));
+    const sampleWidth = Math.max(1, Math.round(naturalWidth * scale));
+    const sampleHeight = Math.max(1, Math.round(naturalHeight * scale));
+
+    const canvas = document.createElement("canvas");
+    canvas.width = sampleWidth;
+    canvas.height = sampleHeight;
+
+    const ctx = canvas.getContext("2d", { alpha: true, willReadFrequently: true });
+    if (!ctx) return false;
+
+    ctx.clearRect(0, 0, sampleWidth, sampleHeight);
+    ctx.drawImage(img, 0, 0, sampleWidth, sampleHeight);
+
+    const { data } = ctx.getImageData(0, 0, sampleWidth, sampleHeight);
+    for (let index = 3; index < data.length; index += 4) {
+      if (data[index] < 250) return true;
+    }
+
+    return false;
+  } catch {
+    return false;
+  }
+}
+
 function imgToDataURL(img: HTMLImageElement): Promise<string | null> {
   return new Promise((resolve) => {
     try {
@@ -70,19 +102,18 @@ function imgToDataURL(img: HTMLImageElement): Promise<string | null> {
       const targetWidth = Math.max(1, Math.round(naturalWidth * scale));
       const targetHeight = Math.max(1, Math.round(naturalHeight * scale));
 
-      // Heuristic: small assets (logos, ornaments) often rely on transparency.
-      // Photos uploaded by the user are usually large. Preserve alpha for the
-      // small ones and compress the large ones to JPEG to save memory on iOS.
-      const isLikelyPhoto = naturalWidth >= 600 || naturalHeight >= 600;
+      const preserveTransparency = hasTransparentPixels(img);
+      const isLargeBitmap = naturalWidth >= 600 || naturalHeight >= 600;
+      const shouldCompressAsJpeg = isLargeBitmap && !preserveTransparency;
 
       const canvas = document.createElement("canvas");
       canvas.width = targetWidth;
       canvas.height = targetHeight;
 
-      const ctx = canvas.getContext("2d", { alpha: !isLikelyPhoto });
+      const ctx = canvas.getContext("2d", { alpha: preserveTransparency });
       if (!ctx) return resolve(null);
 
-      if (isLikelyPhoto) {
+      if (shouldCompressAsJpeg) {
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(0, 0, targetWidth, targetHeight);
       } else {
@@ -93,7 +124,7 @@ function imgToDataURL(img: HTMLImageElement): Promise<string | null> {
       ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
 
       resolve(
-        isLikelyPhoto
+        shouldCompressAsJpeg
           ? canvas.toDataURL("image/jpeg", 0.92)
           : canvas.toDataURL("image/png")
       );
