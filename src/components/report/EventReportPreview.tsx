@@ -1,5 +1,23 @@
-import { forwardRef } from "react";
+import { forwardRef, useEffect, useRef, useState, type CSSProperties, type ForwardedRef, type MutableRefObject } from "react";
 import ReportHeader from "./ReportHeader";
+
+const PAGE_WIDTH = 794;
+const PAGE_HEIGHT = 1123;
+const PREVIEW_SHADOW_SPACE = 32;
+
+const assignForwardedRef = (
+  forwardedRef: ForwardedRef<HTMLDivElement>,
+  node: HTMLDivElement | null,
+) => {
+  if (typeof forwardedRef === "function") {
+    forwardedRef(node);
+    return;
+  }
+
+  if (forwardedRef) {
+    (forwardedRef as MutableRefObject<HTMLDivElement | null>).current = node;
+  }
+};
 
 export interface ReportData {
   title: string;
@@ -23,6 +41,8 @@ const clampStyle = (lines: number) => ({
 
 const EventReportPreview = forwardRef<HTMLDivElement, { data: ReportData; images: string[] }>(
   ({ data, images }, ref) => {
+    const rootRef = useRef<HTMLDivElement | null>(null);
+    const [scale, setScale] = useState(1);
     const shown = images.slice(0, 4);
     const evidenceSlots = Array.from({ length: 4 }, (_, index) => shown[index] ?? null);
     const metaItems = [
@@ -31,17 +51,51 @@ const EventReportPreview = forwardRef<HTMLDivElement, { data: ReportData; images
       ["عدد المستفيدين", data.beneficiaries],
       ["المنفذ", data.executor],
     ] as const;
+    const previewStyle = {
+      "--preview-scale": scale.toString(),
+      "--preview-page-width": `${PAGE_WIDTH}px`,
+      "--preview-page-height": `${PAGE_HEIGHT}px`,
+      "--preview-shadow-space": `${PREVIEW_SHADOW_SPACE}px`,
+    } as CSSProperties;
+
+    useEffect(() => {
+      const node = rootRef.current;
+      if (!node) return;
+
+      const updateScale = () => {
+        const nextScale = Math.min(1, node.clientWidth / PAGE_WIDTH);
+        setScale((current) => (Math.abs(current - nextScale) < 0.001 ? current : nextScale));
+      };
+
+      updateScale();
+
+      if (typeof ResizeObserver === "undefined") {
+        window.addEventListener("resize", updateScale);
+        return () => window.removeEventListener("resize", updateScale);
+      }
+
+      const observer = new ResizeObserver(updateScale);
+      observer.observe(node);
+
+      return () => observer.disconnect();
+    }, []);
 
     return (
       <div
-        ref={ref}
-        className="report-preview-root mx-auto w-full pb-2"
+        ref={(node) => {
+          rootRef.current = node;
+          assignForwardedRef(ref, node);
+        }}
+        className="report-preview-root mx-auto w-full pb-4"
         dir="rtl"
         data-pdf-root
+        style={previewStyle}
       >
-        <div className="report-preview-scaler flex flex-col items-center gap-6">
-          <div className="overflow-hidden rounded-[32px] shadow-2xl">
-            <div data-pdf-page className="h-[1123px] w-[794px] overflow-hidden bg-card">
+        <div className="report-preview-shell">
+          <div className="report-preview-scaler">
+            <div className="report-preview-stage">
+              <div className="overflow-hidden rounded-[32px] shadow-2xl">
+                <div data-pdf-page className="h-[1123px] w-[794px] overflow-hidden bg-card">
               <div className="flex h-full flex-col bg-card">
                 <ReportHeader compact fixedLayout />
 
@@ -138,6 +192,7 @@ const EventReportPreview = forwardRef<HTMLDivElement, { data: ReportData; images
                       {data.reporter || "—"}
                     </div>
                   </div>
+                </div>
                 </div>
               </div>
             </div>
