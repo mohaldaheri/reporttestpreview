@@ -70,20 +70,33 @@ function imgToDataURL(img: HTMLImageElement): Promise<string | null> {
       const targetWidth = Math.max(1, Math.round(naturalWidth * scale));
       const targetHeight = Math.max(1, Math.round(naturalHeight * scale));
 
+      // Heuristic: small assets (logos, ornaments) often rely on transparency.
+      // Photos uploaded by the user are usually large. Preserve alpha for the
+      // small ones and compress the large ones to JPEG to save memory on iOS.
+      const isLikelyPhoto = naturalWidth >= 600 || naturalHeight >= 600;
+
       const canvas = document.createElement("canvas");
       canvas.width = targetWidth;
       canvas.height = targetHeight;
 
-      const ctx = canvas.getContext("2d", { alpha: false });
+      const ctx = canvas.getContext("2d", { alpha: !isLikelyPhoto });
       if (!ctx) return resolve(null);
 
-      ctx.fillStyle = "#ffffff";
-      ctx.fillRect(0, 0, targetWidth, targetHeight);
+      if (isLikelyPhoto) {
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, targetWidth, targetHeight);
+      } else {
+        ctx.clearRect(0, 0, targetWidth, targetHeight);
+      }
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = "high";
       ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
 
-      resolve(canvas.toDataURL("image/jpeg", 0.92));
+      resolve(
+        isLikelyPhoto
+          ? canvas.toDataURL("image/jpeg", 0.92)
+          : canvas.toDataURL("image/png")
+      );
     } catch {
       resolve(null);
     }
