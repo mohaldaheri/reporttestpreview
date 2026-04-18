@@ -134,8 +134,8 @@
   }
   .report-preview-stage {
     position: absolute;
-    inset-block-start: 0;
-    inset-inline-start: 50%;
+    top: 0;
+    left: 50%;
     width: var(--preview-page-width);
     transform: translateX(-50%) scale(var(--preview-scale));
     transform-origin: top center;
@@ -146,6 +146,8 @@
     height: auto !important;
   }
   [data-export-mode="pdf"] .report-preview-stage {
+    position: static !important;
+    left: auto !important;
     transform: none !important;
   }
   [data-export-mode="pdf"].report-preview-root {
