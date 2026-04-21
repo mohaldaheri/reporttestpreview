@@ -1,5 +1,4 @@
 import saadaLogo from "@/assets/hayyakum-logo.png";
-import hajjMinistryLogo from "@/assets/hajj-ministry-logo.png";
 import circleOrnament from "@/assets/circle-ornament.png";
 import khumasiaLogo from "@/assets/khumasia-logo.png";
 import hayyakumLogo from "@/assets/hayyakum-white-logo.png";
@@ -43,13 +42,8 @@ export default function ReportHeader({ compact = false, fixedLayout = false }: {
 
       {/* Ministry logo centered on top */}
       <div className="relative flex flex-col items-center gap-3">
-        {/* Ministry logo and Saada logo side by side at top */}
-        <div className="flex w-full items-center justify-center gap-3" style={{ marginRight: '-4rem' }}>
-          <img
-            src={hajjMinistryLogo}
-            alt="وزارة الحج والعمرة"
-            className={fixedLayout ? "h-20 w-auto" : "h-16 w-auto md:h-20"}
-          />
+        {/* Saada logo centered at top */}
+        <div className="flex w-full items-center justify-center">
           <img
             src={saadaLogo}
             alt="فريق السعادة"
@@ -62,7 +56,7 @@ export default function ReportHeader({ compact = false, fixedLayout = false }: {
             src={khumasiaLogo}
             alt="الخماسية السعودية"
             className={fixedLayout ? "h-24 w-auto" : "h-16 w-auto md:h-24"}
-            />
+          />
           <img
             src={hayyakumLogo}
             alt="حياكم الله"
