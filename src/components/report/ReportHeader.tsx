@@ -40,17 +40,17 @@ export default function ReportHeader({ compact = false, fixedLayout = false }: {
       </div>
       <div className="absolute inset-0 bg-foreground/5" />
 
-      {/* Three logos aligned horizontally: Hayyakum (left) | Saada (center) | Khumasia (right) */}
+      {/* Three logos aligned horizontally — RTL order: Khumasia (right) | Saada (center) | Hayyakum (left) */}
       <div className="relative flex w-full items-center justify-between gap-3 md:gap-6">
-        {/* Hayyakum Allah - stays on the left */}
+        {/* Khumasia - right side (first in RTL) */}
         <div className="flex shrink-0 items-center">
           <img
-            src={hayyakumLogo}
-            alt="حياكم الله"
+            src={khumasiaLogo}
+            alt="الخماسية السعودية"
             className={
               fixedLayout
-                ? (compact ? "h-20 w-auto" : "h-24 w-auto")
-                : (compact ? "h-14 w-auto md:h-20" : "h-16 w-auto md:h-24")
+                ? "h-24 w-auto"
+                : "h-20 w-auto md:h-24"
             }
           />
         </div>
@@ -60,20 +60,20 @@ export default function ReportHeader({ compact = false, fixedLayout = false }: {
           aria-hidden
           className={
             fixedLayout
-              ? "h-16 w-px bg-primary-foreground/40"
-              : "h-12 w-px bg-primary-foreground/40 md:h-16"
+              ? "h-20 w-px bg-primary-foreground/40"
+              : "h-16 w-px bg-primary-foreground/40 md:h-20"
           }
         />
 
-        {/* Saada (Happiness Team) - center, same size as Khumasia */}
+        {/* Saada (Happiness Team) - center */}
         <div className="flex flex-1 items-center justify-center">
           <img
             src={saadaLogo}
             alt="فريق السعادة"
             className={
               fixedLayout
-                ? "h-16 w-auto"
-                : "h-12 w-auto md:h-16"
+                ? "h-24 w-auto"
+                : "h-20 w-auto md:h-24"
             }
           />
         </div>
@@ -83,20 +83,20 @@ export default function ReportHeader({ compact = false, fixedLayout = false }: {
           aria-hidden
           className={
             fixedLayout
-              ? "h-16 w-px bg-primary-foreground/40"
-              : "h-12 w-px bg-primary-foreground/40 md:h-16"
+              ? "h-20 w-px bg-primary-foreground/40"
+              : "h-16 w-px bg-primary-foreground/40 md:h-20"
           }
         />
 
-        {/* Khumasia - right, same size as Saada */}
+        {/* Hayyakum Allah - left side */}
         <div className="flex shrink-0 items-center justify-end">
           <img
-            src={khumasiaLogo}
-            alt="الخماسية السعودية"
+            src={hayyakumLogo}
+            alt="حياكم الله"
             className={
               fixedLayout
-                ? "h-16 w-auto"
-                : "h-12 w-auto md:h-16"
+                ? "h-24 w-auto"
+                : "h-20 w-auto md:h-24"
             }
           />
         </div>
