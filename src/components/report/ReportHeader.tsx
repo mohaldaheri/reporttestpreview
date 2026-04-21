@@ -40,27 +40,64 @@ export default function ReportHeader({ compact = false, fixedLayout = false }: {
       </div>
       <div className="absolute inset-0 bg-foreground/5" />
 
-      {/* Ministry logo centered on top */}
-      <div className="relative flex flex-col items-center gap-3">
-        {/* Saada logo centered at top */}
-        <div className="flex w-full items-center justify-center">
-          <img
-            src={saadaLogo}
-            alt="فريق السعادة"
-            className={fixedLayout ? "h-24 w-auto" : "h-20 w-auto md:h-24"}
-          />
-        </div>
-        {/* Khumasia (left) and Hayyakum (right) side by side */}
-        <div className="flex w-full items-center justify-between">
-          <img
-            src={khumasiaLogo}
-            alt="الخماسية السعودية"
-            className={fixedLayout ? "h-24 w-auto" : "h-16 w-auto md:h-24"}
-          />
+      {/* Three logos aligned horizontally: Hayyakum (left) | Saada (center) | Khumasia (right) */}
+      <div className="relative flex w-full items-center justify-between gap-3 md:gap-6">
+        {/* Hayyakum Allah - stays on the left */}
+        <div className="flex shrink-0 items-center">
           <img
             src={hayyakumLogo}
             alt="حياكم الله"
-            className={fixedLayout ? (compact ? "h-28 w-auto" : "h-36 w-auto") : (compact ? "h-20 w-auto md:h-28" : "h-24 w-auto md:h-36")}
+            className={
+              fixedLayout
+                ? (compact ? "h-20 w-auto" : "h-24 w-auto")
+                : (compact ? "h-14 w-auto md:h-20" : "h-16 w-auto md:h-24")
+            }
+          />
+        </div>
+
+        {/* Divider */}
+        <div
+          aria-hidden
+          className={
+            fixedLayout
+              ? "h-16 w-px bg-primary-foreground/40"
+              : "h-12 w-px bg-primary-foreground/40 md:h-16"
+          }
+        />
+
+        {/* Saada (Happiness Team) - center, same size as Khumasia */}
+        <div className="flex flex-1 items-center justify-center">
+          <img
+            src={saadaLogo}
+            alt="فريق السعادة"
+            className={
+              fixedLayout
+                ? "h-16 w-auto"
+                : "h-12 w-auto md:h-16"
+            }
+          />
+        </div>
+
+        {/* Divider */}
+        <div
+          aria-hidden
+          className={
+            fixedLayout
+              ? "h-16 w-px bg-primary-foreground/40"
+              : "h-12 w-px bg-primary-foreground/40 md:h-16"
+          }
+        />
+
+        {/* Khumasia - right, same size as Saada */}
+        <div className="flex shrink-0 items-center justify-end">
+          <img
+            src={khumasiaLogo}
+            alt="الخماسية السعودية"
+            className={
+              fixedLayout
+                ? "h-16 w-auto"
+                : "h-12 w-auto md:h-16"
+            }
           />
         </div>
       </div>
